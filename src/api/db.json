@@ -1,0 +1,56 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@test.com",
+      "password": "admin123",
+      "name": "Admin",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "email": "user@21c-digital.com",
+      "password": "user123",
+      "name": "User 21C",
+      "role": "user"
+    }
+  ],
+  "projects": [
+    {
+      "id": "1",
+      "title": "21POS - Gestion de point de vente",
+      "description": "Application mobile et web pour la gestion des ventes et du stock.",
+      "techStack": [
+        "React",
+        "Node.js",
+        "MySQL"
+      ],
+      "githubUrl": "https://github.com/ton-compte/21pos",
+      "liveUrl": "https://21pos.tn",
+      "status": "online"
+    },
+    {
+      "id": "2",
+      "title": "Portfolio 3D Architecture",
+      "description": "Visualisation 3D de façades et d'intérieurs pour clients immobiliers.",
+      "techStack": [
+        "React",
+        "Three.js"
+      ],
+      "githubUrl": "https://github.com/ton-compte/archi-3d",
+      "liveUrl": null,
+      "status": "in-progress"
+    }
+  ],
+  "formSubmissions": [
+    {
+      "id": "3250",
+      "nom": "Youssef Belanes",
+      "email": "belanes.youssef1@gmail.com",
+      "message": "test ............................................................",
+      "priorité": "haute",
+      "createdAt": "2025-12-15T22:45:35.748Z",
+      "status": "in-progress"
+    }
+  ]
+}
