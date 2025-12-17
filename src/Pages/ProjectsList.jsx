@@ -1,92 +1,116 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-const API_URL = 'http://localhost:4000/projects';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaArrowRight } from "react-icons/fa";
+
+const API_URL = "http://localhost:4000/projects";
+
 function ProjectsList() {
-const [projects, setProjects] = useState([]);
-const [loading, setLoading] = useState(false);
-const [error, setError] = useState(null);
-useEffect(() => {
-async function load() {
-try {
-setLoading(true);
-setError(null);
-const res = await fetch(API_URL);
-if (!res.ok) throw new Error('Impossible de charger les projets');
-const data = await res.json();
-// Option : ne montrer que les projets “online”
-setProjects(data.filter((p) => p.status !== 'archived'));
-} catch (err) {
-setError(err.message);
-} finally {
-setLoading(false);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        setLoading(true);
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error("Impossible de charger les projets");
+        const data = await res.json();
+        setProjects(data.filter((p) => p.status !== "archived"));
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  return (
+    <section className="relative bg-black text-white py-24 overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle,_#0ff4_1px,_transparent_1px)] bg-[size:20px_20px]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-purple-700/10" />
+
+      <div className="relative max-w-7xl mx-auto px-6">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-20"
+        >
+          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+            Mes Projets
+          </h1>
+          <p className="mt-6 text-gray-300 max-w-2xl mx-auto">
+            Une sélection de projets académiques et personnels illustrant mes
+            compétences techniques et ma méthodologie de travail.
+          </p>
+        </motion.div>
+
+        {/* States */}
+        {loading && <p className="text-center text-cyan-300">Chargement...</p>}
+        {error && <p className="text-center text-red-400">{error}</p>}
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          {projects.map((project, i) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
+              viewport={{ once: true }}
+              className="border border-cyan-500/30 bg-white/5 backdrop-blur-xl
+                         rounded-2xl shadow-lg hover:shadow-cyan-500/30
+                         hover:bg-white/10 transition flex flex-col"
+            >
+              <div className="p-8 flex flex-col h-full">
+                <h2 className="text-xl font-semibold text-cyan-300 mb-3">
+                  {project.title}
+                </h2>
+
+                <p className="text-gray-300 text-sm mb-6 line-clamp-4">
+                  {project.description}
+                </p>
+
+                {project.techStack?.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.techStack.map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-3 py-1 text-xs rounded-full
+                                   bg-cyan-500/10 border border-cyan-500/30
+                                   text-cyan-300"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <Link
+                  to={`/projects/${project.id}`}
+                  className="mt-auto inline-flex items-center gap-3
+                             text-cyan-400 hover:text-cyan-300 font-medium"
+                >
+                  Voir les détails <FaArrowRight />
+                </Link>
+              </div>
+            </motion.div>
+          ))}
+
+          {projects.length === 0 && !loading && (
+            <p className="col-span-full text-center text-gray-400">
+              Aucun projet disponible pour le moment.
+            </p>
+          )}
+        </div>
+      </div>
+    </section>
+  );
 }
-}
-load();
-}, []);
-if (loading) return <p className="text-center py-10">Chargement...</p>;
-if (error) return <p className="text-center text-red-600 py-10">{error}</p>;
-return (
-<section className="max-w-6xl mx-auto px-4 py-12">
-<header className="mb-8 text-center">
-<h1 className="text-3xl font-bold text-gray-900 mb-2">
-Mes projets
-</h1>
-<p className="text-sm text-gray-600">
-Une sélection de réalisations web et mobiles.
-</p>
-</header>
-<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-{projects.map((project) => (
-<article
-key={project.id}
-className="group bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition"
->
-{/* Bandeau visuel */}
-<div className="h-32 bg-gradient-to-r from-indigo-500 to-purple-600 group-hover:opacity-90 transition" />
-<div className="p-5 flex flex-col h-full">
-<h2 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
-{project.title}
-</h2>
-{project.description && (
-<p className="text-sm text-gray-600 mb-4 line-clamp-3">
-{project.description}
-</p>
-)}
-{project.techStack && project.techStack.length > 0 && (
-<div className="flex flex-wrap gap-2 mb-4">
-{project.techStack.map((tech) => (
-<span
-key={tech}
-className="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700"
->
-{tech}
-</span>
-))}
-</div>
-)}
-<div className="mt-auto flex items-center justify-between pt-2">
-<Link
-to={`/projects/${project.id}`}
-className="text-sm font-medium text-indigo-600 group-hover:text-indigo-700"
->
-Voir les détails
-</Link>
-{project.status && (
-<span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600 capitalize">
-{project.status}
-</span>
-)}
-</div>
-</div>
-</article>
-))}
-{projects.length === 0 && (
-<p className="col-span-full text-center text-gray-500">
-Aucun projet disponible pour le moment.
-</p>
-)}
-</div>
-</section>
-);
-}
+
 export default ProjectsList;

@@ -13,6 +13,13 @@
       "password": "user123",
       "name": "User 21C",
       "role": "user"
+    },
+    {
+      "id": "d2ae",
+      "name": "user1",
+      "email": "user1@test.com",
+      "password": "test123",
+      "role": "user"
     }
   ],
   "projects": [
@@ -50,7 +57,16 @@
       "message": "test ............................................................",
       "priorité": "haute",
       "createdAt": "2025-12-15T22:45:35.748Z",
-      "status": "in-progress"
+      "status": "done"
     }
-  ]
+  ],
+  "settings": {
+    "portfolioName": "Youssef Belanes",
+    "contactEmail": "belanes.youssef1@gmail.com",
+    "showProjects": true,
+    "showExperience": true,
+    "showContact": true,
+    "adminLoginEnabled": true,
+    "version": "1.0.0"
+  }
 }

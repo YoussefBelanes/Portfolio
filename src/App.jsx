@@ -16,7 +16,7 @@ import ContactForm from './components/Formulaire/FormulaireG6';
 
 // Composants Admin
 import AdminDashboard from './components/Admin/Dashboard';
-import AdminUsers from './components/Admin/Users';
+import AdminUsersPage from './components/Admin/AdminUsersPage.jsx';
 import AdminFormSubmissions from './components/Admin/AdminFormSubmissions.jsx';
 import ProjectsAdminPage from './components/Admin/ProjectsAdminPage';
 import AdminAnalytics from './components/Admin/Statistics';
@@ -78,7 +78,7 @@ function App() {
       >
         <Route index element={<AdminDashboard />} />
         <Route path="projects" element={<ProjectsAdminPage />} />
-        <Route path="users" element={<AdminUsers />} />
+        <Route path="users" element={<AdminUsersPage />} />
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="settings" element={<AdminSettings />} />
         <Route path="forms" element={<AdminFormSubmissions />} />

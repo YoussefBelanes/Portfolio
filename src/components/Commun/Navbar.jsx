@@ -1,4 +1,3 @@
-// components/Navbar.jsx
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -17,7 +16,7 @@ export default function Navbar() {
     { name: "Accueil", path: "/" },
     { name: "À propos", path: "/about" },
     { name: "Expérience", path: "/experience" },
-    { name: "Projets", path: "/projects"},
+    { name: "Projets", path: "/projects" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -51,8 +50,7 @@ export default function Navbar() {
                   key={item.name}
                   to={item.path}
                   className={`relative text-sm px-2 py-1 font-medium transition-colors
-                    ${active ? "text-cyan-300" : "text-gray-300 hover:text-cyan-400"}
-                  `}
+                    ${active ? "text-cyan-300" : "text-gray-300 hover:text-cyan-400"}`}
                 >
                   {item.name}
 
@@ -71,7 +69,7 @@ export default function Navbar() {
                 text-gray-900 bg-gradient-to-r from-cyan-300 to-purple-300 
                 shadow-lg hover:opacity-95 transition"
               >
-                Se connecter
+                Admin
               </Link>
             ) : (
               <div className="flex items-center gap-4 ml-6">
@@ -79,12 +77,14 @@ export default function Navbar() {
                   to="/admin"
                   className="text-sm font-medium text-gray-200 hover:text-cyan-300 transition"
                 >
-                  Tableau de bord
+                  Dashboard
                 </Link>
 
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 rounded-full text-sm font-medium border border-red-500 text-red-400 hover:bg-red-500/10 transition"
+                  className="ml-6 px-5 py-2 rounded-full text-sm font-semibold
+                             text-blue-600 bg-gradient-to-r from-cyan-300 to-purple-300
+                             shadow-lg hover:opacity-95 transition"
                 >
                   Se déconnecter
                 </button>
@@ -140,7 +140,7 @@ export default function Navbar() {
                 text-gray-900 bg-gradient-to-r from-cyan-300 to-purple-300 
                 shadow-lg hover:opacity-95 transition"
               >
-                Se connecter
+                Admin
               </Link>
             ) : (
               <div className="flex flex-col gap-2">
@@ -149,7 +149,7 @@ export default function Navbar() {
                   onClick={() => setIsMobileOpen(false)}
                   className="text-center rounded-full px-4 py-2 font-medium bg-white/5 border border-cyan-500 text-cyan-200 hover:bg-white/10 transition"
                 >
-                  Tableau de bord
+                  Dashboard
                 </Link>
 
                 <button
@@ -157,7 +157,9 @@ export default function Navbar() {
                     setIsMobileOpen(false);
                     handleLogout();
                   }}
-                  className="rounded-full border border-red-500 text-red-400 px-4 py-2 font-medium hover:bg-red-500/10 transition"
+                  className="block text-center rounded-full px-4 py-2 font-semibold
+                             text-blue-600 bg-gradient-to-r from-cyan-300 to-purple-300
+                             shadow-lg hover:opacity-95 transition"
                 >
                   Se déconnecter
                 </button>

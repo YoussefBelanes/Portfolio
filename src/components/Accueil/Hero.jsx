@@ -1,5 +1,7 @@
 import React from "react";
 import { FaRocket, FaPlay, FaGithub, FaLinkedin } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
 
 const Hero = () => {
   const user = {
@@ -59,16 +61,16 @@ const Hero = () => {
             {/* ---------------- BUTTONS ---------------- */}
             <div className="flex flex-wrap gap-4 pt-4">
               {/* UPDATED BUTTON */}
-              <a
-                href="/projects"
-                className="inline-flex items-center gap-3 px-6 py-3 rounded-xl 
-                           bg-gradient-to-r from-cyan-300 to-purple-300 
-                           text-gray-900 font-semibold shadow-xl
-                           hover:opacity-90 transform hover:-translate-y-1 transition"
-              >
-                <FaRocket />
-                Voir mes projets
-              </a>
+              <Link to="/projects"
+               className="inline-flex items-center gap-3 px-6 py-3 rounded-xl 
+               bg-gradient-to-r from-cyan-300 to-purple-300 
+               text-gray-900 font-semibold shadow-xl
+               hover:opacity-90 transform hover:-translate-y-1 transition"
+              > 
+              <FaRocket />
+               Voir mes projets
+              </Link>
+
 
               <a
                 href={`mailto:${user.email}`}
