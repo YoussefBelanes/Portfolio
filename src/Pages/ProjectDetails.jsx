@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaArrowLeft, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
-const API_URL = "http://localhost:4000/projects";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function ProjectDetails() {
   const { id } = useParams();
@@ -17,7 +17,7 @@ function ProjectDetails() {
     async function load() {
       try {
         setLoading(true);
-        const res = await fetch(`${API_URL}/${id}`);
+        const res = await fetch(`${API_URL}/projects/${id}`);
         if (res.status === 404) {
           setError("Projet introuvable");
           return;

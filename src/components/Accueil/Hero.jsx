@@ -72,13 +72,12 @@ const Hero = () => {
               </Link>
 
 
-              <a
-                href={`mailto:${user.email}`}
+              <Link to="/contact"
                 className="inline-flex items-center gap-3 px-6 py-3 rounded-xl border border-cyan-600/30 text-cyan-200 hover:bg-white/5 transition backdrop-blur-sm"
               >
                 <FaPlay />
                 Me contacter
-              </a>
+              </Link>
             </div>
 
             {/* socials + stats */}

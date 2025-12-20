@@ -33,7 +33,7 @@
         "MySQL"
       ],
       "githubUrl": "https://github.com/ton-compte/21pos",
-      "liveUrl": "https://21pos.tn",
+      "liveUrl": null,
       "status": "online"
     },
     {
@@ -55,7 +55,7 @@
       "nom": "Youssef Belanes",
       "email": "belanes.youssef1@gmail.com",
       "message": "test ............................................................",
-      "priorité": "haute",
+      "priority": "haute",
       "createdAt": "2025-12-15T22:45:35.748Z",
       "status": "done"
     }

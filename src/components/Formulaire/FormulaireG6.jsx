@@ -16,7 +16,7 @@ const ContactForm = () => {
     nom: false,
     email: false,
     message: false,
-    priorité: true,
+    priority: true,
     send: false,
     sended: false,
     sending: false,
@@ -26,7 +26,7 @@ const ContactForm = () => {
     nom: "",
     email: "",
     message: "",
-    priorité: "moyenne",
+    priority: "moyenne",
   });
 
   const [touched, setTouched] = useState({
@@ -46,7 +46,7 @@ const ContactForm = () => {
       nom: formData.nom.length > 3,
       email: formData.email.includes("@") && formData.email.includes("."),
       message: formData.message.length > 10,
-      priorité: true,
+      priority: true,
     };
 
     const allValid =
@@ -91,7 +91,7 @@ const ContactForm = () => {
         nom: false,
         email: false,
         message: false,
-        priorité: true,
+        priority: true,
         send: false,
         sended: true,
         sending: false,
@@ -101,7 +101,7 @@ const ContactForm = () => {
         nom: "",
         email: "",
         message: "",
-        priorité: "moyenne",
+        priority: "moyenne",
       });
 
       setTouched({
@@ -226,8 +226,8 @@ const ContactForm = () => {
 
             {/* Priority */}
             <select
-              name="priorité"
-              value={formData.priorité}
+              name="priority"
+              value={formData.priority}
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-xl bg-black/40 border border-cyan-500/30 text-cyan-200"
             >

@@ -1,7 +1,7 @@
 import axiosClient from './axiosClient'; // ton instance axios avec baseURL http://localhost:4000
 const RESOURCE =
 
-'/formSubmissions';
+'/formsubmissions';
 
 export async function createFormSubmission(payload) {
 const res = await axiosClient.post(RESOURCE, payload);

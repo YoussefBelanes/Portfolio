@@ -1,19 +1,18 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { logoutAdmin } from "../../auth/adminAuth";
 
 function Logout() {
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-useEffect(() => {
-localStorage.removeItem('authToken');
-navigate('/login'
+  useEffect(() => {
+    // Clear admin session
+    logoutAdmin();
 
-, { replace: true });
+    navigate("/", { replace: true });
+  }, [navigate]);
 
-}, [navigate]);
-
-return null;
+  return null;
 }
-
 
 export default Logout;

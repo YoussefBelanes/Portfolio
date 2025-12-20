@@ -11,6 +11,7 @@ import {
   FaProjectDiagram,
 } from "react-icons/fa";
 import { FaListCheck } from "react-icons/fa6";
+import { logoutAdmin } from "../../auth/adminAuth";
 
 const SidebarLink = ({ to, icon: Icon, children }) => {
   return (
@@ -56,10 +57,10 @@ const AdminLayout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("authUser");
-    navigate("/login");
-  };
+  logoutAdmin();          
+  navigate("/", { replace: true });
+};
+
 
   return (
     <div className="flex min-h-screen bg-[#05060a] text-white">

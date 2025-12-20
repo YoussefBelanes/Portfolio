@@ -1,14 +1,24 @@
 // Pages/Admin/Dashboard.jsx
 import { useEffect, useMemo, useState } from "react";
 import {
-  FaUsers,
+  FaUserShield,        // Admin (replaces Users)
   FaProjectDiagram,
   FaEnvelopeOpenText,
   FaCheckCircle,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-import { getUsers } from "../../api/usersApi";
+/*
+  NOTE:
+  -----
+  Users were originally handled via a local JSON server (db.json).
+  To allow free deployment (no backend), user management was removed
+  and replaced with a single admin access (env-based).
+  
+  The commented code below reflects the original architecture.
+*/
+
+// import { getUsers } from "../../api/usersApi"; // ← original
 import { getProjects } from "../../api/projectsApi";
 import { getFormSubmissions } from "../../api/formSubmissionsApi";
 
@@ -24,7 +34,7 @@ function countLast7Days(items) {
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]); // ← original
   const [projects, setProjects] = useState([]);
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,12 +42,17 @@ const AdminDashboard = () => {
   useEffect(() => {
     async function load() {
       try {
-        const [u, p, s] = await Promise.all([
-          getUsers(),
+        const [
+          // u,
+          p,
+          s,
+        ] = await Promise.all([
+          // getUsers(), // ← removed for free deployment
           getProjects(),
           getFormSubmissions(),
         ]);
-        setUsers(u);
+
+        // setUsers(u);
         setProjects(p);
         setSubmissions(s);
       } finally {
@@ -53,14 +68,14 @@ const AdminDashboard = () => {
 
     return [
       {
-        label: "Utilisateurs",
-        value: users.length,
-        delta: countLast7Days(users),
-        icon: FaUsers,
-        onClick: () => navigate("/admin/users"),
+        label: "Admin",
+        value: 1,
+        delta: 0,
+        icon: FaUserShield,
+        onClick: () => navigate("/admin"),
       },
       {
-        label: "Projets",
+        label: "Projets actifs",
         value: projects.filter((p) => p.status !== "archived").length,
         delta: countLast7Days(projects),
         icon: FaProjectDiagram,
@@ -72,7 +87,10 @@ const AdminDashboard = () => {
         delta: countLast7Days(submissions),
         icon: FaEnvelopeOpenText,
         onClick: () => navigate("/admin/forms"),
-        warning: untreated.length > 0 ? `${untreated.length} non traités` : null,
+        warning:
+          untreated.length > 0
+            ? `${untreated.length} non traités`
+            : null,
       },
       {
         label: "Traités",
@@ -84,7 +102,7 @@ const AdminDashboard = () => {
         onClick: () => navigate("/admin/forms"),
       },
     ];
-  }, [users, projects, submissions, navigate]);
+  }, [projects, submissions, navigate]);
 
   return (
     <div className="space-y-10">

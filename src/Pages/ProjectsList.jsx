@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaArrowRight } from "react-icons/fa";
 
-const API_URL = "http://localhost:4000/projects";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function ProjectsList() {
   const [projects, setProjects] = useState([]);
@@ -14,7 +14,7 @@ function ProjectsList() {
     async function load() {
       try {
         setLoading(true);
-        const res = await fetch(API_URL);
+        const res = await fetch(`${API_URL}/projects`);
         if (!res.ok) throw new Error("Impossible de charger les projets");
         const data = await res.json();
         setProjects(data.filter((p) => p.status !== "archived"));

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  FaUsers,
+  FaUserShield,        // Admin
   FaProjectDiagram,
   FaEnvelopeOpenText,
   FaCheckCircle,
@@ -21,7 +21,17 @@ import {
   CartesianGrid,
 } from "recharts";
 
-import { getUsers } from "../../api/usersApi";
+/*
+  NOTE:
+  -----
+  User analytics were originally included (JSON server / db.json).
+  To allow free deployment (no backend), user management was removed
+  and replaced with a single admin access (env-based).
+  
+  The commented code below reflects the original architecture.
+*/
+
+// import { getUsers } from "../../api/usersApi"; // ← original
 import { getProjects } from "../../api/projectsApi";
 import { getFormSubmissions } from "../../api/formSubmissionsApi";
 
@@ -46,19 +56,24 @@ function getLast7DaysActivity(items) {
 }
 
 const AdminAnalytics = () => {
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]); // ← original
   const [projects, setProjects] = useState([]);
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
-      const [u, p, s] = await Promise.all([
-        getUsers(),
+      const [
+        // u,
+        p,
+        s,
+      ] = await Promise.all([
+        // getUsers(), // ← removed for free deployment
         getProjects(),
         getFormSubmissions(),
       ]);
-      setUsers(u);
+
+      // setUsers(u);
       setProjects(p);
       setSubmissions(s);
       setLoading(false);
@@ -69,16 +84,28 @@ const AdminAnalytics = () => {
   /* ---------- KPIs ---------- */
   const stats = useMemo(
     () => [
-      { label: "Utilisateurs", value: users.length, icon: FaUsers },
-      { label: "Projets", value: projects.length, icon: FaProjectDiagram },
-      { label: "Messages", value: submissions.length, icon: FaEnvelopeOpenText },
+      {
+        label: "Admin",
+        value: 1,
+        icon: FaUserShield,
+      },
+      {
+        label: "Projets",
+        value: projects.length,
+        icon: FaProjectDiagram,
+      },
+      {
+        label: "Messages",
+        value: submissions.length,
+        icon: FaEnvelopeOpenText,
+      },
       {
         label: "Traités",
         value: submissions.filter((s) => s.status === "done").length,
         icon: FaCheckCircle,
       },
     ],
-    [users, projects, submissions]
+    [projects, submissions]
   );
 
   /* ---------- CHART DATA ---------- */
@@ -116,10 +143,8 @@ const AdminAnalytics = () => {
   return (
     <div className="space-y-12">
       {/* TITLE */}
-      <h1
-        className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent"
-      >
-        Statistiques
+      <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+        Statistics
       </h1>
 
       {/* KPIs */}
@@ -146,12 +171,10 @@ const AdminAnalytics = () => {
       </div>
 
       {/* 7-DAY ACTIVITY */}
-      <div
-        className="rounded-2xl border border-cyan-500/20
-                   bg-white/5 backdrop-blur-xl p-6 shadow-xl"
-      >
+      <div className="rounded-2xl border border-cyan-500/20
+                      bg-white/5 backdrop-blur-xl p-6 shadow-xl">
         <h2 className="text-lg font-semibold text-cyan-300 mb-4">
-          Activité des 7 derniers jours
+          Activité des messages — 7 derniers jours
         </h2>
 
         <ResponsiveContainer width="100%" height={300}>
@@ -178,11 +201,9 @@ const AdminAnalytics = () => {
 
       {/* CHARTS */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        {/* BAR CHART */}
-        <div
-          className="rounded-2xl border border-cyan-500/20
-                     bg-white/5 backdrop-blur-xl p-6"
-        >
+        {/* PROJECTS */}
+        <div className="rounded-2xl border border-cyan-500/20
+                        bg-white/5 backdrop-blur-xl p-6">
           <h2 className="text-lg font-semibold text-cyan-300 mb-4">
             Projets par statut
           </h2>
@@ -201,11 +222,9 @@ const AdminAnalytics = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* PIE CHART */}
-        <div
-          className="rounded-2xl border border-cyan-500/20
-                     bg-white/5 backdrop-blur-xl p-6"
-        >
+        {/* SUBMISSIONS */}
+        <div className="rounded-2xl border border-cyan-500/20
+                        bg-white/5 backdrop-blur-xl p-6">
           <h2 className="text-lg font-semibold text-cyan-300 mb-4">
             Messages par statut
           </h2>

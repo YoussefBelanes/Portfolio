@@ -1,37 +1,61 @@
-// Pages/Admin/Settings.jsx
 import { useEffect, useState } from "react";
 import {
-  FaUserCog,
+  FaUserShield,
   FaGlobe,
   FaShieldAlt,
   FaInfoCircle,
 } from "react-icons/fa";
 
-import { getSettings, updateSettings } from "../../api/settingsApi";
-import { getUsers, updateUser } from "../../api/usersApi";
+/*
+  NOTE:
+  -----
+  This settings page was originally connected to:
+  - usersApi (admin profile stored in DB)
+  - settingsApi (global site settings)
+
+  To allow FREE deployment (no backend),
+  the admin system was refactored to use env-based authentication
+  and UI-only settings for demonstration purposes.
+
+  Original API calls are intentionally left commented
+  to document the initial architecture.
+*/
+
+// import { getSettings, updateSettings } from "../../api/settingsApi";
+// import { getUsers, updateUser } from "../../api/usersApi";
 
 const AdminSettings = () => {
-  const [settings, setSettings] = useState(null);
-  const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  /* ---------- ADMIN (ENV-BASED) ---------- */
+  const admin = {
+    name: "Admin",
+    email: import.meta.env.VITE_ADMIN_EMAIL,
+    role: "Administrator",
+  };
+
+  /* ---------- UI-ONLY SETTINGS ---------- */
+  const [settings, setSettings] = useState({
+    portfolioName: "My Portfolio",
+    contactEmail: import.meta.env.VITE_ADMIN_EMAIL,
+    showProjects: true,
+    showExperience: true,
+    showContact: true,
+    adminLoginEnabled: true,
+    version: "1.0.0",
+  });
+
   useEffect(() => {
-    async function load() {
-      const [s, users] = await Promise.all([
-        getSettings(),
-        getUsers(),
-      ]);
-
-      const currentAdmin = JSON.parse(
-        localStorage.getItem("authUser")
-      );
-
-      setSettings(s);
-      setAdmin(users.find((u) => u.id === currentAdmin.id));
-      setLoading(false);
-    }
-    load();
+    // Simulate async loading (portfolio demo)
+    setTimeout(() => setLoading(false), 400);
   }, []);
+
+  function toggle(key) {
+    setSettings((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  }
 
   if (loading) {
     return (
@@ -41,56 +65,22 @@ const AdminSettings = () => {
     );
   }
 
-  async function handleSaveSettings() {
-    await updateSettings(settings);
-    alert("Paramètres mis à jour");
-  }
-
-  async function handleSaveProfile() {
-    await updateUser(admin.id, admin);
-    localStorage.setItem("authUser", JSON.stringify(admin));
-    alert("Profil admin mis à jour");
-  }
-
-  function toggle(key) {
-    setSettings((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  }
-
   return (
     <div className="space-y-10">
-      <h1
-        className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent"
-      >
-        Paramètres
+      <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+        Settings
       </h1>
 
       {/* ADMIN PROFILE */}
-      <Section title="Profil Admin" icon={FaUserCog}>
-        <Input
-          label="Nom"
-          value={admin.nom}
-          onChange={(e) =>
-            setAdmin({ ...admin, nom: e.target.value })
-          }
-        />
-        <Input
-          label="Email"
-          value={admin.email}
-          onChange={(e) =>
-            setAdmin({ ...admin, email: e.target.value })
-          }
-        />
-        <Input
-          label="Mot de passe"
-          type="password"
-          onChange={(e) =>
-            setAdmin({ ...admin, password: e.target.value })
-          }
-        />
-        <Button onClick={handleSaveProfile}>Sauvegarder</Button>
+      <Section title="Profil Admin" icon={FaUserShield}>
+        <Info label="Nom" value={admin.name} />
+        <Info label="Email" value={admin.email} />
+        <Info label="Rôle" value={admin.role} />
+
+        <p className="text-xs text-gray-500 mt-2">
+          L’authentification admin est basée sur des variables d’environnement
+          pour permettre un déploiement gratuit sans backend.
+        </p>
       </Section>
 
       {/* SITE SETTINGS */}
@@ -105,6 +95,7 @@ const AdminSettings = () => {
             })
           }
         />
+
         <Input
           label="Email public"
           value={settings.contactEmail}
@@ -132,16 +123,19 @@ const AdminSettings = () => {
           onClick={() => toggle("showContact")}
         />
 
-        <Button onClick={handleSaveSettings}>Sauvegarder</Button>
+        <Button disabled>
+          Sauvegarde désactivée (mode démo)
+        </Button>
       </Section>
 
       {/* SECURITY */}
       <Section title="Sécurité" icon={FaShieldAlt}>
         <Toggle
-          label="Autoriser la connexion admin"
+          label="Connexion admin activée"
           checked={settings.adminLoginEnabled}
           onClick={() => toggle("adminLoginEnabled")}
         />
+
         <Button
           danger
           onClick={() => {
@@ -156,7 +150,11 @@ const AdminSettings = () => {
       {/* SYSTEM INFO */}
       <Section title="Informations système" icon={FaInfoCircle}>
         <Info label="Version" value={settings.version} />
-        <Info label="Environnement" value="Development" />
+        <Info
+          label="Environnement"
+          value={import.meta.env.DEV ? "Development" : "Production"}
+        />
+        <Info label="Déploiement" value="Vercel (Free)" />
       </Section>
     </div>
   );
@@ -210,16 +208,19 @@ function Toggle({ label, checked, onClick }) {
   );
 }
 
-function Button({ children, danger, ...props }) {
+function Button({ children, danger, disabled, ...props }) {
   return (
     <button
       {...props}
+      disabled={disabled}
       className={`mt-4 w-full py-3 rounded-xl font-semibold
         ${
           danger
             ? "!bg-red-500/20 text-red-400"
             : "bg-gradient-to-r from-cyan-400 to-purple-500 text-black"
-        }`}
+        }
+        ${disabled ? "opacity-50 cursor-not-allowed" : ""}
+      `}
     >
       {children}
     </button>

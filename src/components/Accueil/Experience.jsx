@@ -52,10 +52,10 @@ const Experience = () => {
     },
     {
       period: "11/2024",
-      role: "Certification – Cybersecurity & AI Basis",
+      role: "Formation – Cybersecurity & AI Basis",
       company: "Institut International de Technologie (IIT)",
       location: "Tunisie",
-      type: "Certification",
+      type: "Formation",
       description:
         "Initiation aux fondamentaux de la cybersécurité et de l'intelligence artificielle.",
       achievements: ["Sécurité informatique", "Bases IA"],

@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { isAdminLoggedIn, logoutAdmin } from "../../auth/adminAuth";
 
 export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(isAdminLoggedIn());
+
   const navigate = useNavigate();
   const location = useLocation();
 
+  // 🔁 Re-check auth on route change
   useEffect(() => {
-    setIsAuthenticated(Boolean(localStorage.getItem("authToken")));
+    setIsAuthenticated(isAdminLoggedIn());
   }, [location.pathname]);
 
   const navigation = [
@@ -21,8 +24,9 @@ export default function Navbar() {
   ];
 
   function handleLogout() {
-    localStorage.removeItem("authToken");
-    navigate("/login", { replace: true });
+    logoutAdmin();
+    setIsAuthenticated(false);
+    navigate("/", { replace: true });
   }
 
   return (
@@ -42,7 +46,6 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-
             {navigation.map((item) => {
               const active = location.pathname === item.path;
               return (
@@ -53,9 +56,8 @@ export default function Navbar() {
                     ${active ? "text-cyan-300" : "text-gray-300 hover:text-cyan-400"}`}
                 >
                   {item.name}
-
                   {active && (
-                    <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full"></span>
+                    <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full" />
                   )}
                 </Link>
               );
@@ -109,7 +111,6 @@ export default function Navbar() {
         }`}
       >
         <div className="bg-[#05060a]/95 backdrop-blur-xl border-t border-white/5 shadow-lg pb-4">
-
           <div className="px-4 py-3 space-y-2">
             {navigation.map((item) => {
               const active = location.pathname === item.path;
@@ -166,7 +167,6 @@ export default function Navbar() {
               </div>
             )}
           </div>
-
         </div>
       </div>
     </nav>
